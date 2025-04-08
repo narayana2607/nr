@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot in ReactJS</title> <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0"
+    />
+    <form class="chat-form" action="#">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+      /* Import Google Fonts */
+      /* @import is generally less performant than <link>, keeping the <link> above */
+      /* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap'); */
+
+      /* Basic Reset and Font Setup */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        width: 100%;
+        min-height: 100vh;
+        /* Simple gradient background */
+        background: linear-gradient(#F4F0FF, #DACDFF);
+      }
+
+      /* Main container class (used for toggling visibility) */
+      .container {
+        /* Styles for the container when needed */
+      }
+
+      /* Chatbot Toggler Button */
+      #chatbot-toggler {
+        position: fixed; /* Keeps button in place during scroll */
+        bottom: 30px;
+        right: 35px;
+        border: none;
+        height: 50px;
+        width: 50px;
+        display: flex;
+        cursor: pointer;
+        border-radius: 50%; /* Makes it circular */
+        background: #6D4FC2; /* Button color */
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease; /* Smooth transition for transform */
+        z-index: 1000; /* Ensure it's above other elements */
+      }
+
+      #chatbot-toggler span {
+        position: absolute; /* Allows icons to overlap */
+        color: #fff; /* Icon color */
+        /* Assumes Material Symbols Rounded font is used for icons */
+        font-family: 'Material Symbols Rounded';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px; /* Adjust as needed */
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Rotate toggler when chatbot is shown */
+      .container.show-chatbot #chatbot-toggler {
+        transform: rotate(90deg);
+      }
+
+      /* Hide the 'close' icon initially */
+      #chatbot-toggler span:last-child {
+         opacity: 0;
+      }
+      /* Hide the 'open' icon when chatbot is shown */
+      .container.show-chatbot #chatbot-toggler span:first-child {
+        opacity: 0;
+      }
+      /* Show the 'close' icon when chatbot is shown */
+      .container.show-chatbot #chatbot-toggler span:last-child {
+        opacity: 1;
+      }
+
+      /* Chatbot Popup Window */
+      .chatbot-popup {
+        position: fixed; /* Keeps popup in place */
+        opacity: 0; /* Start hidden */
+        pointer-events: none; /* Prevent interaction when hidden */
+        bottom: 100px; /* Position above the toggler */
+        right: 35px;
+        width: 420px;
+        background: #fff; /* Popup background */
+        border-radius: 15px;
+        overflow: hidden; /* Ensures content stays within rounded corners */
+        transform: scale(0.5); /* Start scaled down */
+        transform-origin: bottom right; /* Scale from the bottom right corner */
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); /* Popup shadow */
+        transition: all 0.2s ease-in-out; /* Smooth transition for appearance */
+        z-index: 999; /* Below toggler but above other content */
+      }
+
+      /* Show popup when container has 'show-chatbot' class */
+      .container.show-chatbot .chatbot-popup {
+        opacity: 1;
+        transform: scale(1);
+        pointer-events: auto; /* Allow interaction when shown */
+      }
+
+      /* Chat Header */
+      .chatbot-popup .chat-header {
+        display: flex;
+        padding: 15px 22px;
+        align-items: center;
+        justify-content: space-between;
+        background: #6D4FC2; /* Header background */
+        border-top-left-radius: 15px; /* Match popup rounding */
+        border-top-right-radius: 15px;
+      }
+
+      .chat-header .header-info {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      /* Placeholder for logo/icon */
+      .header-info .logo-placeholder {
+        height: 35px;
+        width: 35px;
+        padding: 6px;
+        flex-shrink: 0;
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Example using Material Symbol */
+        color: #6D4FC2;
+        font-size: 20px;
+      }
+
+       .header-info .logo-placeholder span {
+         font-family: 'Material Symbols Rounded';
+         font-weight: normal;
+         font-style: normal;
+         font-size: 20px; /* Adjust as needed */
+         line-height: 1;
+         letter-spacing: normal;
+         text-transform: none;
+         display: inline-block;
+         white-space: nowrap;
+         word-wrap: normal;
+         direction: ltr;
+         -webkit-font-feature-settings: 'liga';
+         -webkit-font-smoothing: antialiased;
+       }
+
+
+      .header-info .logo-text {
+        color: #fff; /* Header text color */
+        font-size: 1.31rem;
+        font-weight: 600;
+      }
+
+      /* Close button in header */
+      .chat-header .close-btn {
+        height: 40px;
+        width: 40px;
+        border: none;
+        outline: none;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.9rem;
+        padding-top: 2px;
+        border-radius: 50%;
+        margin-right: -10px; /* Align visually */
+        background: none;
+        transition: 0.2s ease;
+        /* Style for Material Symbol */
+        font-family: 'Material Symbols Rounded';
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .chat-header .close-btn:hover {
+        background: #593bab; /* Darker shade on hover */
+      }
+
+      /* Chat Body (Message Area) */
+      .chat-body {
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* Space between messages */
+        height: 400px; /* Fixed height for scroll */
+        overflow-y: auto; /* Enable vertical scroll */
+        padding: 20px 22px;
+        scrollbar-width: thin; /* For Firefox */
+        scrollbar-color: #ccc #f1f1f1; /* For Firefox */
+      }
+
+      /* Custom Scrollbar (Webkit browsers) */
+      .chat-body::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .chat-body::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 6px;
+      }
+
+      .chat-body::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 6px;
+      }
+
+      .chat-body::-webkit-scrollbar-thumb:hover {
+        background: #aaa;
+      }
+
+      /* Individual Chat Messages */
+      .chat-body .message {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start; /* Align icon with top of message */
+      }
+
+      /* Error message styling */
+      .chat-body .message.error .message-text {
+        color: #D32F2F; /* Red color for errors */
+        background-color: #FFEBEE; /* Light red background */
+        border: 1px solid #FFCDD2;
+      }
+
+      /* Bot message specific styles */
+       .chat-body .bot-message .bot-icon {
+         height: 35px;
+         width: 35px;
+         padding: 6px;
+         flex-shrink: 0;
+         color: #fff; /* Icon color */
+         align-self: flex-end; /* Align icon to bottom if needed */
+         margin-bottom: 2px;
+         background: #6D4FC2; /* Icon background */
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+       }
+
+       .chat-body .bot-message .bot-icon span {
+         font-family: 'Material Symbols Rounded';
+         font-weight: normal;
+         font-style: normal;
+         font-size: 20px; /* Adjust as needed */
+         line-height: 1;
+         letter-spacing: normal;
+         text-transform: none;
+         display: inline-block;
+         white-space: nowrap;
+         word-wrap: normal;
+         direction: ltr;
+         -webkit-font-feature-settings: 'liga';
+         -webkit-font-smoothing: antialiased;
+       }
+
+      /* General message text styling */
+      .chat-body .message .message-text {
+        padding: 12px 16px;
+        max-width: 75%;
+        word-wrap: break-word; /* Wrap long words */
+        white-space: pre-wrap; /* Preserve whitespace and wrap */
+        font-size: 0.95rem;
+        line-height: 1.4;
+      }
+
+      /* Bot message text bubble */
+      .chat-body .bot-message .message-text {
+        background: #F6F2FF; /* Light purple background */
+        color: #333; /* Dark text color */
+        border-radius: 13px 13px 13px 3px; /* Rounded corners, flat bottom-left */
+      }
+
+      /* User message container alignment */
+      .chat-body .user-message {
+        justify-content: flex-end; /* Align user messages to the right */
+      }
+
+      /* User message text bubble */
+      .chat-body .user-message .message-text {
+        color: #fff; /* White text */
+        background: #6D4FC2; /* Purple background */
+        border-radius: 13px 13px 3px 13px; /* Rounded corners, flat bottom-right */
+      }
+
+      /* Chat Footer (Input Area) */
+      .chat-footer {
+         /* Removed absolute positioning to let it sit below chat-body */
+         width: 100%;
+         background: #fff;
+         padding: 10px 22px 15px; /* Adjusted padding */
+         border-top: 1px solid #eee; /* Separator line */
+      }
+
+      /* Chat Input Form */
+      .chat-footer .chat-form {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border-radius: 6px; /* Slightly less rounded */
+        border: 1px solid #CCCCE5; /* Use border instead of outline */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      }
+
+      .chat-footer .chat-form:focus-within {
+        border-color: #6D4FC2; /* Highlight border on focus */
+        box-shadow: 0 0 0 2px rgba(109, 79, 194, 0.2); /* Add focus ring */
+      }
+
+      /* Text input field */
+      .chat-form .message-input {
+        border: none;
+        outline: none;
+        width: 100%;
+        background: none;
+        min-height: 47px; /* Use min-height for potential multi-line */
+        resize: none; /* Prevent manual resizing */
+        padding: 12px 17px; /* Adjusted padding */
+        font-size: 0.95rem;
+        line-height: 1.4;
+        max-height: 100px; /* Limit expansion */
+        overflow-y: auto; /* Allow scrolling if needed */
+      }
+
+      /* Send button */
+      .chat-form .send-btn {
+        height: 35px;
+        width: 35px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: 1.15rem;
+        color: #fff;
+        flex-shrink: 0;
+        margin: 0 6px 0 3px; /* Right margin */
+        border-radius: 50%;
+        background: #6D4FC2;
+        transition: background-color 0.2s ease-in-out;
+        display: flex; /* Center icon */
+        align-items: center;
+        justify-content: center;
+        /* Hide initially, show when input has value (handled by JS) */
+        /* display: none; */
+        /* Style for Material Symbol */
+         font-family: 'Material Symbols Rounded';
+         font-weight: normal;
+         font-style: normal;
+         line-height: 1;
+         letter-spacing: normal;
+         text-transform: none;
+         white-space: nowrap;
+         word-wrap: normal;
+         direction: ltr;
+         -webkit-font-feature-settings: 'liga';
+         -webkit-font-smoothing: antialiased;
+      }
+
+      .chat-form .send-btn:hover {
+        background: #593bab; /* Darker on hover */
+      }
+
+      /* CSS rule to show button when input has text (requires JS to add/remove 'has-text' class or similar) */
+      /* .chat-form .message-input:valid ~ button { */
+      /* display: flex; */
+      /* } */
+      /* Alternative: JS toggles a class on the form or button */
+       .chat-form .send-btn.visible {
+         display: flex;
+       }
+       .chat-form .send-btn.hidden {
+           display: none;
+       }
+
+
+      /* Responsive media query for mobile screens */
+      @media (max-width: 520px) {
+        #chatbot-toggler {
+          right: 20px;
+          bottom: 20px;
+        }
+
+        .chatbot-popup {
+          /* Make it full screen */
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          width: 100%;
+          height: 100%;
+          max-height: 100%;
+          border-radius: 0; /* Remove border radius */
+          transform-origin: bottom center; /* Adjust transform origin */
+          box-shadow: none; /* Remove shadow on mobile */
+          /* Adjust transition if needed */
+          /* Ensure initial hidden state is correct */
+          opacity: 0;
+          transform: translateY(100%); /* Slide in from bottom */
+          pointer-events: none;
+        }
+
+        .container.show-chatbot .chatbot-popup {
+           opacity: 1;
+           transform: translateY(0); /* Slide into view */
+           pointer-events: auto;
+        }
+
+
+        .chatbot-popup .chat-header {
+          padding: 12px 15px;
+          border-radius: 0; /* Remove border radius */
+        }
+
+        .chat-body {
+           /* Calculate height based on header and footer */
+           height: calc(100% - 56px - 67px); /* Adjust based on actual header/footer height */
+           padding: 15px;
+        }
+
+        .chat-footer {
+          padding: 10px 15px 15px;
+          border-top: 1px solid #eee;
+        }
+
+        /* Adjust message width */
+        .chat-body .message .message-text {
+            max-width: 85%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+
+      <button id="chatbot-toggler">
+        <span class="material-symbols-rounded">mode_comment</span>
+        <span class="material-symbols-rounded">close</span>
+      </button>
+
+      <div class="chatbot-popup">
+        <header class="chat-header">
+          <div class="header-info">
+             <span class="logo-placeholder">
+                <span class="material-symbols-rounded">smart_toy</span>
+             </span>
+            <h2 class="logo-text">ChatBot</h2>
+          </div>
+          <button class="close-btn material-symbols-rounded">close</button>
+        </header>
+
+        <ul class="chat-body">
+          <li class="message bot-message">
+             <span class="bot-icon">
+                <span class="material-symbols-rounded">smart_toy</span>
+             </span>
+            <p class="message-text">
+              Hi there 👋<br />How can I help you today?
+            </p>
+          </li>
+          <li class="message user-message">
+             <p class="message-text">This is a user message example.</p>
+           </li>
+            <li class="message bot-message">
+             <span class="bot-icon">
+                 <span class="material-symbols-rounded">smart_toy</span>
+             </span>
+             <p class="message-text">This is a response from the bot.</p>
+           </li>
+           <li class="message bot-message error">
+                <span class="bot-icon">
+                    <span class="material-symbols-rounded">smart_toy</span>
+                </span>
+                <p class="message-text">Oops! Something went wrong. Please try again.</p>
+            </li>
+        </ul>
+
+        <footer class="chat-footer">
+          <form class="chat-form" action="#">
+            <textarea class="message-input" placeholder="Enter a message..." required></textarea>
+            <button type="submit" class="send-btn hidden material-symbols-rounded">send</button>
+          </form>
+        </footer>
+      </div> </div> <script>
+        const chatbotToggler = document.getElementById('chatbot-toggler');
+        const container = document.querySelector('.container');
+        const closeBtn = document.querySelector('.chatbot-popup .close-btn');
+        const messageInput = document.querySelector('.chat-form .message-input');
+        const sendBtn = document.querySelector('.chat-form .send-btn');
+        const chatBody = document.querySelector('.chat-body'); // To scroll down
+
+        // --- Toggle Chatbot Visibility ---
+        const toggleChatbot = () => {
+            container.classList.toggle('show-chatbot');
+            // Focus input when opening, if applicable
+            if (container.classList.contains('show-chatbot')) {
+                // Small delay might be needed for transition
+                setTimeout(() => messageInput.focus(), 100);
+             }
+        };
+
+        chatbotToggler.addEventListener('click', toggleChatbot);
+        closeBtn.addEventListener('click', toggleChatbot);
+
+        // --- Show/Hide Send Button based on input ---
+         const toggleSendButton = () => {
+             const text = messageInput.value.trim();
+             if (text) {
+                 sendBtn.classList.add('visible');
+                 sendBtn.classList.remove('hidden');
+             } else {
+                 sendBtn.classList.remove('visible');
+                 sendBtn.classList.add('hidden');
+             }
+         };
+
+         messageInput.addEventListener('input', toggleSendButton);
+         // Initial check in case there's pre-filled text (unlikely here)
+         toggleSendButton();
+
+
+         // --- Handle Sending Message (Basic Example) ---
+         const handleSendMessage = (event) => {
+             event.preventDefault(); // Prevent form from submitting traditionally
+             const userMessage = messageInput.value.trim();
+             if (!userMessage) return; // Don't send empty messages
+
+             // 1. Create and append user message element
+             const userLi = document.createElement('li');
+             userLi.classList.add('message', 'user-message');
+             userLi.innerHTML = `<p class="message-text">${userMessage}</p>`;
+             chatBody.appendChild(userLi);
+
+             // 2. Clear input and hide send button
+             messageInput.value = '';
+             toggleSendButton(); // Hide button after sending
+             messageInput.style.height = 'auto'; // Reset height after sending
+             messageInput.focus(); // Keep focus on input
+
+             // 3. Scroll to the bottom
+             chatBody.scrollTop = chatBody.scrollHeight;
+
+             // 4. Simulate bot response (replace with actual logic)
+             setTimeout(() => {
+                 const botLi = document.createElement('li');
+                 botLi.classList.add('message', 'bot-message');
+                 // Add error class randomly for example
+                 // if (Math.random() > 0.8) botLi.classList.add('error');
+
+                 // Basic response structure
+                 botLi.innerHTML = `
+                     <span class="bot-icon">
+                         <span class="material-symbols-rounded">smart_toy</span>
+                     </span>
+                     <p class="message-text">Thinking...</p> `;
+                 chatBody.appendChild(botLi);
+                 chatBody.scrollTop = chatBody.scrollHeight; // Scroll again
+
+                 // Simulate fetching response
+                 setTimeout(() => {
+                      const botTextElement = botLi.querySelector('.message-text');
+                      if (botLi.classList.contains('error')) {
+                           botTextElement.textContent = "Sorry, I encountered an error trying to respond.";
+                      } else {
+                           botTextElement.textContent = `Okay, you said: "${userMessage}". I'm just a simple example!`;
+                      }
+                      chatBody.scrollTop = chatBody.scrollHeight; // Scroll after content update
+                 }, 1000); // Simulate delay
+
+             }, 600); // Delay before bot starts "thinking"
+         };
+
+         document.querySelector('.chat-form').addEventListener('submit', handleSendMessage);
+
+         // --- Auto-resize Textarea ---
+         const autoResizeTextarea = () => {
+             messageInput.style.height = 'auto'; // Reset height
+             // Set height based on scroll height, but limit by max-height from CSS
+             const maxHeight = 100; // Match CSS max-height
+             messageInput.style.height = `${Math.min(messageInput.scrollHeight, maxHeight)}px`;
+         };
+         messageInput.addEventListener('input', autoResizeTextarea);
+
+         // --- Allow Enter to send, Shift+Enter for newline ---
+         messageInput.addEventListener('keydown', (event) => {
+             // Check if Enter is pressed without Shift
+             if (event.key === 'Enter' && !event.shiftKey) {
+                 event.preventDefault(); // Prevent default newline behavior
+                 // Trigger form submission
+                 document.querySelector('.chat-form').requestSubmit();
+                 // Alternative: sendBtn.click(); (if button is always rendered)
+             }
+         });
+
+
+    </script>
+  </body>
+</html>

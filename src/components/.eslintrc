@@ -1,0 +1,9 @@
+{
+    "rules": {
+      "no-warning-comments": ["warn", { "terms": ["todo", "fixme", "xxx"], "location": "start" }],
+      "react/jsx-props-no-spreading": "off"
+
+    }
+  }
+  
+  

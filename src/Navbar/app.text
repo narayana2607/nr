@@ -1,0 +1,143 @@
+import React, { useState, useEffect, Suspense } from "react";
+import { BrowserRouter as Router, Route, Routes, NavLink } from "react-router-dom";
+import ChatbotIcon from "./components/ai/ChatbotIcon";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./App.css";
+
+import { MdSearch } from 'react-icons/md'; 
+
+const Home = React.lazy(() => import("./components/Home"));
+const Gallery = React.lazy(() => import("./components/oneui/Gallery"));
+const About = React.lazy(() => import("./components/About"));
+const Footer = React.lazy(() => import("./components/Footer"));
+const YT = React.lazy(() => import("./components/oneui/YT"));
+const FoodHome = React.lazy(() => import("./components/Food/FoodHome"));
+const Employee = React.lazy(() => import("./components/employee/Employee"));
+const Portfolio = React.lazy(() => import("./components/me/Portfolio"));
+const ProductPage = React.lazy(() => import("./components/ecommerce/ProductPage"));
+const Studentinfo = React.lazy(() => import("./components/student/StudentInfo"));
+
+const App = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearchPopup, setShowSearchPopup] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const searchData = [
+    { id: 1, title: "Home", link: "/home", description: "Visit the Home page" },
+    { id: 2, title: "About Us", link: "/about", description: "Learn more about us" },
+    { id: 3, title: "Gallery", link: "/gallery", description: "View the image gallery" },
+    { id: 4, title: "YouTube", link: "/yt", description: "Watch our YouTube videos" },
+    { id: 5, title: "Bar & Restaurant", link: "/foodhome", description: "Check out our menu" },
+    { id: 6, title: "Employees", link: "/employee", description: "Manage employees" },
+    { id: 7, title: "Student Info", link: "/studentinfo", description: "Manage student information" },
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape" && showSearchPopup) {
+        setShowSearchPopup(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showSearchPopup]); // Add showSearchPopup as a dependency
+
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value.toLowerCase());
+  };
+
+  const filteredResults = searchData.filter(
+    (item) =>
+      item.title.toLowerCase().includes(searchQuery) ||
+      item.description.toLowerCase().includes(searchQuery)
+  );
+
+  return (
+    <Router>
+      <div>
+        <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
+          <ul>
+            <li>
+              <NavLink to="/" className="nav-link" end>
+                <h2>NNR</h2>
+              </NavLink>
+            </li>
+            <li><NavLink to="/home" className="nav-link">HOME</NavLink></li>
+            <li><NavLink to="/foodhome" className="nav-link">BAR & RESTAURANT</NavLink></li>
+            <li><NavLink to="/employee" className="nav-link">EMPLOYEES</NavLink></li>
+            <li><NavLink to="/studentinfo" className="nav-link">STUDENT</NavLink></li>
+            <li><NavLink to="/yt" className="nav-link">YOUTUBE</NavLink></li>
+            <li><NavLink to="/gallery" className="nav-link">GALLERY</NavLink></li>
+            <li><NavLink to="/productpage" className="nav-link">e-SHOP</NavLink></li>
+            <li><NavLink to="/about" className="nav-link">ABOUT US</NavLink></li>
+            <li className="search-container">
+              <button className="search-button" onClick={() => setShowSearchPopup(true)}>
+                <MdSearch size={20} color="black" /> 
+              </button>
+            </li>
+          </ul>
+        </nav>
+
+        <ChatbotIcon />
+
+        {showSearchPopup && (
+          <div className="search-popup">
+            <div className="search-popup-content">
+              <button className="close-popup" onClick={() => setShowSearchPopup(false)}>
+                &times;
+              </button>
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={handleSearch}
+                className="search-input"
+              />
+              <div className="search-results">
+                {filteredResults.length > 0 ? (
+                  filteredResults.map((result) => (
+                    <div key={result.id} className="search-result-item">
+                      <NavLink to={result.link} className="nav-link" onClick={() => setShowSearchPopup(false)}>
+                        {result.title}
+                      </NavLink>
+                      <p>{result.description}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>No results found.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<Portfolio />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/foodhome" element={<FoodHome />} />
+            <Route path="/employee" element={<Employee />} />
+            <Route path="/studentinfo" element={<Studentinfo />} />
+            <Route path="/yt" element={<YT />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/productpage" element={<ProductPage />} />
+          </Routes>
+        </Suspense>
+      </div>
+      <Footer />
+    </Router>
+  );
+};
+
+export default App;

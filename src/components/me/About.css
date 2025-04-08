@@ -1,0 +1,27 @@
+.about {
+  padding: 50px 20px;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 0%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(18, 18, 18, 1)),
+  url('https://i.pinimg.com/736x/cd/2f/ad/cd2fad991abd17c03547d515cb550d70.jpg') no-repeat center center/cover;
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+
+
+.about-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.about-description {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #b3b3b3;
+}

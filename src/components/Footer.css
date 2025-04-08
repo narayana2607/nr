@@ -1,0 +1,92 @@
+/* Footer General Styles */
+footer {
+  color: white;
+  background-color: black;
+  width: 100% ;
+  margin-top: 0%;
+  border-radius: 0%;
+}
+
+/* Social Media Section */
+footer .d-flex {
+  background: rgb(0,0,0);
+  background: linear-gradient(90deg, rgba(0,0,0,1) 10%, rgba(252,176,69,1) 100%);
+}
+
+footer .d-flex span {
+  font-size: 19px;
+}
+
+footer .d-flex a {
+  color: white;
+  margin-right: 16px;
+  transition: color 0.3s ease;
+}
+
+footer .d-flex a:hover {
+  color: #1ef6d5;
+}
+
+/* Footer Links Section */
+footer h6 {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+footer h6::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background-color: #1ef6d5;
+  margin: 8px 0;
+}
+
+footer p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+footer a {
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #1ef6d5;
+}
+
+/* Contact Section Icons */
+footer .fas {
+  margin-right: 8px;
+}
+
+/* Copyright Section */
+footer .text-center {
+  padding: 0px;
+  font-size: 14px;
+  background-color: black;
+}
+
+footer .text-center a {
+  color: #1ef6d5;
+  text-decoration: none;
+}
+
+footer .text-center a:hover {
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  footer .row {
+    text-align: center;
+  }
+
+  footer .col-md-3,
+  footer .col-md-2,
+  footer .col-md-4 {
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,239 @@
+.App{
+  margin-top: -75px;
+    padding: 0;
+    font-family: 'Arial', sans-serif; /* A consistent, globally applied font */
+    color: var(--primary-text); /* Global theme variable */
+    line-height: 1.6;
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;  
+    background: url("https://i.pinimg.com/736x/3a/ab/5e/3aab5ef6fa1eafe19e719b86d14748ac.jpg") no-repeat center center fixed;
+    background-size: cover; /* Ensure the image covers the viewport */
+    background-attachment: fixed; /* Parallax effect for modern design */
+    background-blend-mode: darken; /* Enhance contrast with text */
+    background-color: rgba(0, 0, 0, 0.7); /* Add a dark overlay for better readability */
+  
+    text-align: center;
+    padding: 10px;
+    max-width: 1610px;
+
+
+}
+
+.emp{
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 70px;
+    font-size: 8rem;
+    color: #f5f8f8;
+    background-color: #09adb0;
+    padding: auto;
+    max-width: 160px;
+
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Button Styling */
+
+/* Base Button Styling */
+.btn {
+    display: inline-block;
+    padding: 1px;
+    margin-left: 10;
+    margin-right: 10px;
+    margin-top: 90px;
+    font-size: 10px;
+    font-weight: bold;
+    gap:7px;
+    border-radius: 30px;
+    border: 2px solid transparent;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    background: linear-gradient(120deg, #6a11cb, #2575fc); /* Gradient background */
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Hover Effect */
+  .btn:hover {
+    transform: translateY(-3px); /* Lifting effect */
+    background: linear-gradient(120deg, #2575fc, #6a11cb); /* Reverse gradient */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Active State (Click Feedback) */
+  .btn:active {
+    transform: translateY(1px); /* Pressed effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Primary Button Variant */
+  .btn.primary {
+    background: linear-gradient(120deg, #009efd, #2af598); /* Blue to Green */
+  }
+  
+  .btn.primary:hover {
+    background: linear-gradient(120deg, #2af598, #009efd); /* Reverse gradient */
+  }
+  
+  /* Secondary Button Variant */
+  .btn.secondary {
+    background: linear-gradient(120deg, #f7971e, #ffd200); /* Orange to Yellow */
+  }
+  
+  .btn.secondary:hover {
+    background: linear-gradient(120deg, #ffd200, #f7971e); /* Reverse gradient */
+  }
+  
+  /* Danger Button Variant */
+  .btn.danger {
+    background: linear-gradient(120deg, #ff4e50, #f9d423); /* Red to Orange */
+  }
+  
+  .btn.danger:hover {
+    background: linear-gradient(120deg, #f9d423, #ff4e50); /* Reverse gradient */
+  }
+  
+  /* Disabled Button Styling */
+  .btn:disabled {
+    background: #d3d3d3;
+    color: #888;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+  
+
+/* Search and Filters */
+.search-container input,
+.filters input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #1ef6d5;
+    border-radius: 25px;
+    margin-left: 10px;
+    margin-top: 20px;
+    color: #1ef6d5;
+    background-color: #0e0e0d04;
+
+}
+
+/* Employee Cards */
+/* Employee Cards */
+.employee-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    
+}
+
+.employee-card {
+    background: #0b0b0b;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.employee-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px white;
+}
+
+.employee-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    object-fit: cover;
+    border: 2px solid #007bff;
+}
+
+.employee-card p {
+    margin: 4px 0;
+    font-size: 16px;
+    color: #faf8f8;
+    text-align:left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.employee-card p strong {
+    font-weight: bold;
+    color: #16dce6;
+    width: 30%; /* Set consistent width for labels */
+    text-align: right;
+    margin-right: 10px;
+}
+
+.employee-card p span {
+    width: 65%; /* Set consistent width for values */
+    text-align: right;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.button-group button {
+    width: 48%;
+}
+
+/* Modal Styling */
+.Modal {
+    background: rgba(14, 13, 13, 0.685);
+    border-radius: 10px;
+    padding: 30px;
+    width: 430px;
+    max-width: 100%;
+    margin: auto;
+    color: #faf8f8;
+    box-shadow: 0 4px 6px rgb(248, 249, 249);
+}
+
+.Overlay {
+    background-color: rgba(0, 0, 0, 0.655);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.employee-form input,
+.employee-form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.employee-form input[type="file"] {
+    border: none;
+}
+
+.employee-form .btn {
+    font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .employee-card {
+        margin: 10px;
+    }
+}
+

@@ -1,0 +1,373 @@
+.student-info{
+    margin-top: -75px;
+    font-family: 'Arial', sans-serif;
+    background: url("https://i.pinimg.com/736x/3a/ab/5e/3aab5ef6fa1eafe19e719b86d14748ac.jpg") no-repeat center center fixed;
+    background-size: cover;
+    background-blend-mode: darken;
+    color: white;
+    overflow-x: hidden;
+    line-height: 1.6;
+
+    background-color: rgba(0, 0, 0, 0.265); /* Add a dark overlay for better readability */
+    max-width: 1610px;
+    /* background: rgba(6, 7, 7, 0.196); */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    
+    padding: 10px;
+}
+.stu{
+    text-align: center;
+    margin-bottom: 90px;
+    margin-top: 70px;
+        font-size: 8rem;
+        color: #f5f8f8;
+        background-color: #09adb0;
+        padding: auto;
+    max-width: 160px;
+
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Buttons */
+.add-student-btn {
+    background-color: #09adb0;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.add-student-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Search Bar */
+.search-input {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 20px;
+    padding: 10px;
+    border: 1px solid #1ef6d5;
+    border-radius: 25px;
+    font-size: 16px;
+    color: #1ef6d5;
+    background-color: rgba(0, 0, 0, 0.736);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: #0bfed9;
+}
+
+.search-input:focus {
+    border-color: #09adb0;
+    box-shadow: 0 0 8px rgba(255, 253, 253, 0.945);
+}
+
+/* Table */
+table {
+    width: 90%;
+    border-collapse: collapse;
+    color: white;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: 5%;
+}
+
+table th,
+table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+table th {
+    background-color: #1ef6d6c0;
+    font-weight: bold;
+    color: black;
+}
+
+table td {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+table tr:hover {
+    background-color: rgba(0, 0, 0, 0.84);
+}
+
+table img {
+    width: 90px;
+    height: 100%;
+    border-radius: 20%;
+    object-fit: cover;
+    border: 0px solid #09adb0;
+}
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: rgba(9, 9, 9, 0.95);
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+    color: #1ef6d5;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #cf0f0f;
+    padding-bottom: 10px;
+}
+
+.modal-header h2 {
+    font-size: 2.8rem;
+    margin: 0;
+}
+
+.close-modal {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #1ef6d5;
+}
+
+.close-modal:hover {
+    color: red;
+}
+
+/* Form Container */
+.modal-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.form-group {
+    flex: 1 1 calc(50% - 20px); /* Two columns with space between */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #d61414;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #0defdc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #09adb0;
+}
+
+.profile-preview {
+    text-align: center;
+}
+
+.profile-preview img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    object-fit: cover;
+    border: 1px solid #09adb0;
+}
+
+.modal-body button {
+    width: 100%;
+    background-color: #09adb0;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-body button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .form-group {
+        flex: 1 1 100%; /* Full width for mobile */
+    }
+}
+.view-btn {
+    background-color: #1ef6d5;
+    color: black;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #09adb0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+}
+
+.view-btn:hover {
+    background-color: #09adb0;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+/* View Modal Overlay */
+.view-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Dim background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* View Modal Content */
+.view-modal-content {
+    background: linear-gradient(135deg, #1e1e1e, #292929); /* Gradient background */
+    border-radius: 10px;
+    padding: 30px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+}
+
+/* Modal Header */
+.view-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #09adb0;
+    padding-bottom: 10px;
+}
+
+.view-modal-header h2 {
+    font-size: 2rem;
+    color: #09adb0;
+    margin: 0;
+}
+
+.view-close-modal {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #f44336;
+    transition: color 0.3s ease;
+}
+
+.view-close-modal:hover {
+    color: #ff6347;
+}
+
+/* Modal Body */
+.view-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.view-modal-body p {
+    font-size: 1rem;
+    margin: 5px 0;
+    line-height: 1.6;
+}
+
+.view-modal-body p strong {
+    color: #09adb0;
+    font-weight: bold;
+}
+
+/* Profile Picture Styling */
+.view-modal-body img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin: 10px auto;
+    display: block;
+    border: 2px solid #09adb0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Table-Like Structure for Details */
+.view-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.view-details-item {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.view-details-item strong {
+    display: block;
+    color: #464747;
+    margin-bottom: 5px;
+    font-size: 1rem;
+}

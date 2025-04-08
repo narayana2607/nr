@@ -1,0 +1,78 @@
+.status-page {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    padding: 20px;
+    text-align: center;
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .status-header {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .status-header h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin: 0;
+  }
+  
+  .status-main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    max-width: 800px;
+  }
+  
+  .status-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+  
+  .status-section-heading {
+    font-size: 1.5rem;
+    color: #34495e;
+    margin-bottom: 10px;
+  }
+  
+  .status-indicator {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .status-online {
+    background-color: #2ecc71;
+    color: white;
+  }
+  
+  .status-offline {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .app-version-info{
+      font-size: 1.3rem;
+      color: #007bff;
+      font-weight: bold;
+  }
+  
+  @media (max-width: 600px) {
+    .status-main-content {
+      width: 95%;
+    }
+  }
+  
