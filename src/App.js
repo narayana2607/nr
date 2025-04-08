@@ -19,7 +19,7 @@ import { PacmanLoader } from 'react-spinners';
 import "./App.css";
 const Age = lazy(() => import("./components/dob/Age"));
 const ChatbotIcon = lazy(() => import("./components/ai/ChatbotIcon"));
-const Navbar = lazy(() => import("./Naru/Navbar"));
+const Navbar = lazy(() => import("./Navbar/Navbar"));
 const Footer = lazy(() => import("./components/Footer"));
 const Home = lazy(() => import("./components/Home"));
 const Gallery = lazy(() => import("./components/oneui/Gallery"));
