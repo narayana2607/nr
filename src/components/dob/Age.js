@@ -11,40 +11,21 @@ const AgeVerificationApp = () => {
   const [age, setAge] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
 
-  // Supported file types
   const supportedFileTypes = [
-    "JPG",
-    "JPEG",
-    "PNG",
-    "HEIC",
-    "GIF",
-    "WEBP",
-    "BMP",
-    "TIFF"
+    "JPG", "JPEG", "PNG", "HEIC", "GIF", "WEBP", "BMP", "TIFF"
   ];
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-
-    if (!selectedFile) {
-      setError("No file selected.");
-      return;
-    }
-
-    if (!selectedFile.type.startsWith("image/")) {
-      setError("Invalid file type. Please upload an image.");
-      return;
-    }
-
-    if (selectedFile.size > 20 * 1024 * 1024) {
-      setError("File size exceeds 20MB. Please upload a smaller image.");
-      return;
-    }
-
+    if (!selectedFile) return setError("No file selected.");
+    if (!selectedFile.type.startsWith("image/")) return setError("Invalid file type. Please upload an image.");
+    if (selectedFile.size > 20 * 1024 * 1024) return setError("File size exceeds 20MB. Please upload a smaller image.");
     setFile(selectedFile);
     setImagePreview(URL.createObjectURL(selectedFile));
     setError("");
+    setShowPopup(false);
   };
 
   const extractDOB = (text) => {
@@ -52,7 +33,6 @@ const AgeVerificationApp = () => {
       /(?:DOB|dob|birth date|date of birth)[:\s]*([\d]{1,2}[-/.][\d]{1,2}[-/.][\d]{2,4})/i,
       /(\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4})/
     ];
-    
     for (let pattern of patterns) {
       const match = text.match(pattern);
       if (match) return match[1];
@@ -87,48 +67,44 @@ const AgeVerificationApp = () => {
   };
 
   const handleExtractText = async () => {
-    if (!file) {
-      setError("Please select an image first.");
-      return;
-    }
+    if (!file) return setError("Please select an image first.");
     setLoading(true);
     setError("");
+    setShowPopup(false);
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = async () => {
-      try {
-        const { data: { text } } = await Tesseract.recognize(reader.result, "eng");
-        
-        const dob = extractDOB(text);
-        const extractedName = extractName(text);
-        setName(extractedName);
-        
-        if (dob) {
-          const calculatedAge = calculateAge(dob);
-          setAge(calculatedAge);
-          
-          if (calculatedAge < 18) {
-            toast.error("Access Denied! You must be at least 18 years old.", { position: "bottom-center" });
-          } else {
-            toast.success(`Your current age is: ${calculatedAge} years`, { position: "bottom-center" });
-          }
+    try {
+      const { data: { text } } = await Tesseract.recognize(file, "eng", {
+        logger: (m) => console.log("Tesseract Log:", m)
+      });
+      console.log("Extracted Text:\n", text);
+      const dob = extractDOB(text);
+      const extractedName = extractName(text);
+      setName(extractedName);
+
+      if (dob) {
+        const calculatedAge = calculateAge(dob);
+        setAge(calculatedAge);
+        setShowPopup(true);
+        if (calculatedAge < 18) {
+          toast.error("Access Denied! You must be at least 18 years old.", { position: "bottom-center" });
         } else {
-          toast.warn("Date of Birth not found in the extracted text.", { position: "bottom-center" });
+          toast.success(`Your current age is: ${calculatedAge} years`, { position: "bottom-center" });
         }
-      } catch (err) {
-        setError("Failed to extract text. Please try again.");
-      } finally {
-        setLoading(false);
+      } else {
+        toast.warn("Date of Birth not found in the extracted text.", { position: "bottom-center" });
       }
-    };
+    } catch (err) {
+      console.error("Tesseract Error:", err);
+      setError("Failed to extract text. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="age-verification-container">
       <h2 className="age-verification-heading">Age Verification</h2>
 
-      {/* Supported File Types */}
       <div className="supported-files">
         <h3>Supported File Types</h3>
         <p>{supportedFileTypes.join(", ")}</p>
@@ -142,11 +118,11 @@ const AgeVerificationApp = () => {
         </button>
       </div>
       {error && <p className="error-message">{error}</p>}
-      {name && age !== null && (
+      {showPopup && (
         <div className="result-container">
           <h3 className="result-heading">Verification Details</h3>
           <p>Name: {name}</p>
-          <p>Age: {age}</p>
+          <p>Age: {age !== null ? age : "Not found"}</p>
         </div>
       )}
     </div>

@@ -119,8 +119,8 @@ const Home = () => {
                     <div className="slider-content">
                       <h1 className="slider-title">Welcome to NNR PVT LTD</h1>
                       <p className="slider-subtitle">Innovative Solutions for a Digital World</p>
-                      <p className="slider-text">Partnered with Avila University</p>
-                      <button className="slider-cta">Learn More</button>
+                      {/* <p className="slider-text">Partnered with Avila University</p> */}
+                      {/* <button className="slider-cta">Learn More</button> */}
                     </div>
                   </div>
                 </div>

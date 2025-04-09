@@ -1,48 +1,50 @@
-import React, { useState, Suspense, lazy } from 'react';
+import React, { useState, Suspense, lazy, startTransition } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { motion } from 'framer-motion'; // Import motion from Framer Motion
+import { motion } from 'framer-motion';
 import { PacmanLoader } from 'react-spinners';
-//import ChatbotIcon from "./components/ai/ChatbotIcon";
-//import Navbar from "./Naru/Navbar";
-//import Footer from "./components/Footer";
-//import Home from "./components/Home";
-//import Gallery from "./components/oneui/Gallery";
-//import About from "./components/About";
-//import YT from "./components/oneui/YT";
-//import FoodHome from "./components/Food/FoodHome";
-//import Employee from "./components/employee/Employee";
-//import Portfolio from "./components/me/Portfolio";
-//import ProductPage from "./components/ecommerce/ProductPage";
-//import Studentinfo from "./components/student/StudentInfo";
-//import Search from "./components/Search/PopupSearch";
-//import Excelsheet from "./components/Sheets/Excelsheet";
+// import Layout from './components/Layout/Layout';
 import "./App.css";
-const Age = lazy(() => import("./components/dob/Age"));
-const ChatbotIcon = lazy(() => import("./components/ai/ChatbotIcon"));
-const Navbar = lazy(() => import("./Navbar/Navbar"));
-const Footer = lazy(() => import("./components/Footer"));
-const Home = lazy(() => import("./components/Home"));
-const Gallery = lazy(() => import("./components/oneui/Gallery"));
-const About = lazy(() => import("./components/About"));
-const YT = lazy(() => import("./components/oneui/YT"));
-const FoodHome = lazy(() => import("./components/Food/FoodHome"));
-const Employee = lazy(() => import("./components/employee/Employee"));
-const Portfolio = lazy(() => import("./components/me/Portfolio"));
-const ProductPage = lazy(() => import("./components/ecommerce/ProductPage"));
-const Studentinfo = lazy(() => import("./components/student/StudentInfo"));
-const Search = lazy(() => import("./components/Search/PopupSearch"));
-const Excelsheet = lazy(() => import("./components/Sheets/Excelsheet"));
-const StatusPage = lazy(() => import("./components/StatusPage"));
+
+// Lazy-loaded components with explicit suspense boundaries
+const createLazyComponent = (importFunc) => {
+  const LazyComponent = lazy(importFunc);
+  return (props) => (
+    <Suspense fallback={<div className="loading-container"><PacmanLoader color="#36d7b7" /></div>}>
+      <LazyComponent {...props} />
+    </Suspense>
+  );
+};
+
+const Age = createLazyComponent(() => import("./components/dob/Age"));
+const ChatbotIcon = createLazyComponent(() => import("./components/ai/ChatbotIcon"));
+const Navbar = createLazyComponent(() => import("./Navbar/Navbar"));
+const Footer = createLazyComponent(() => import("./components/Footer"));
+const Home = createLazyComponent(() => import("./components/Home"));
+const Gallery = createLazyComponent(() => import("./components/oneui/Gallery"));
+const About = createLazyComponent(() => import("./components/About"));
+const YT = createLazyComponent(() => import("./components/oneui/YT"));
+const FoodHome = createLazyComponent(() => import("./components/Food/FoodHome"));
+const Employee = createLazyComponent(() => import("./components/employee/Employee"));
+const Portfolio = createLazyComponent(() => import("./components/me/Portfolio"));
+const ProductPage = createLazyComponent(() => import("./components/ecommerce/ProductPage"));
+const Studentinfo = createLazyComponent(() => import("./components/student/StudentInfo"));
+const Search = createLazyComponent(() => import("./components/Search/PopupSearch"));
+const Excelsheet = createLazyComponent(() => import("./components/Sheets/Excelsheet"));
+const StatusPage = createLazyComponent(() => import("./components/StatusPage"));
 
 const App = () => {
   const [showSearch, setShowSearch] = useState(false);
 
   const handleSearchClick = () => {
-    setShowSearch(true);
+    startTransition(() => {
+      setShowSearch(true);
+    });
   };
 
   const handleCloseSearch = () => {
-    setShowSearch(false);
+    startTransition(() => {
+      setShowSearch(false);
+    });
   };
 
   // Animation variants
@@ -52,191 +54,151 @@ const App = () => {
     exit: { opacity: 0, y: -20, transition: { duration: 0.6 } },
   };
 
+  // Wrapper component for page animations
+  const AnimatedPage = ({ children }) => (
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+    >
+      {children}
+    </motion.div>
+  );
+
   return (
     <Router>
-      <Suspense fallback={<div className="loading-container"><PacmanLoader color="#36d7b7" /></div>}>
+    {/* <Layout> */}
         <Navbar onSearchClick={handleSearchClick} />
-      </Suspense>
-      <Suspense fallback={<div className="loading-container"><PacmanLoader color="#36d7b7" /></div>}>
         <ChatbotIcon />
-      </Suspense>
-      <main className="content">
-        <Suspense fallback={<div className="loading-container"><PacmanLoader color="#36d7b7" /></div>}>
+
+        <main className="content">
           <Routes>
-            <Route
-              path="/"
+            <Route 
+              path="/" 
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Navigate to="/home" replace />
-                </motion.div>
-              }
+                <AnimatedPage>
+                  <Navigate to="/about" replace />
+                </AnimatedPage>
+              } 
             />
+            
             <Route
               path="/home"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
+                <AnimatedPage>
                   <Home />
-                </motion.div>
+                </AnimatedPage>
               }
             />
-            <Route
-              path="/portfolio"
-              element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Portfolio />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/excelsheet"
-              element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Excelsheet />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/foodhome"
-              element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <FoodHome />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/employee"
-              element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Employee />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/studentinfo"
-              element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Studentinfo />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/yt"
-              element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <YT />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/gallery"
-              element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Gallery />
-                </motion.div>
-              }
-            />
-
-
-<Route
-              path="/age"
-              element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Age />
-                </motion.div>
-              }
-            />
+            
             <Route
               path="/about"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
+                <AnimatedPage>
                   <About />
-                </motion.div>
+                </AnimatedPage>
               }
             />
-
-
+            
+            <Route
+              path="/portfolio"
+              element={
+                <AnimatedPage>
+                  <Portfolio />
+                </AnimatedPage>
+              }
+            />
+            
+            <Route
+              path="/excelsheet"
+              element={
+                <AnimatedPage>
+                  <Excelsheet />
+                </AnimatedPage>
+              }
+            />
+            
+            <Route
+              path="/foodhome"
+              element={
+                <AnimatedPage>
+                  <FoodHome />
+                </AnimatedPage>
+              }
+            />
+            
+            <Route
+              path="/employee"
+              element={
+                <AnimatedPage>
+                  <Employee />
+                </AnimatedPage>
+              }
+            />
+            
+            <Route
+              path="/studentinfo"
+              element={
+                <AnimatedPage>
+                  <Studentinfo />
+                </AnimatedPage>
+              }
+            />
+            
+            <Route
+              path="/yt"
+              element={
+                <AnimatedPage>
+                  <YT />
+                </AnimatedPage>
+              }
+            />
+            
+            <Route
+              path="/gallery"
+              element={
+                <AnimatedPage>
+                  <Gallery />
+                </AnimatedPage>
+              }
+            />
+            
+            <Route
+              path="/age"
+              element={
+                <AnimatedPage>
+                  <Age />
+                </AnimatedPage>
+              }
+            />
+            
             <Route
               path="/productpage"
               element={
-                <motion.div
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
+                <AnimatedPage>
                   <ProductPage />
-                </motion.div>
+                </AnimatedPage>
               }
             />
-            <Route path="/status" element={<StatusPage />} />
-            <Route path="*" element={<Navigate to="/home" replace />} />
+            
+            <Route 
+              path="/status" 
+              element={<StatusPage />} 
+            />
+            
+            <Route 
+              path="*" 
+              element={<Navigate to="/about" replace />} 
+            />
           </Routes>
-        </Suspense>
-      </main>
-      <Suspense fallback={<div className="loading-container"><PacmanLoader color="#36d7b7" /></div>}>
+        </main>
+
         <Search show={showSearch} onClose={handleCloseSearch} />
-      </Suspense>
-      <Suspense fallback={<div className="loading-container"><PacmanLoader color="#36d7b7" /></div>}>
         <Footer />
-      </Suspense>
+      {/* </Layout> */}
     </Router>
   );
 };
 
 export default App;
-
