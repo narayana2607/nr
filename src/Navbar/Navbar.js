@@ -1,138 +1,210 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import './Navbar.css'; // Assuming you have some base styles
+import './Navbar.css';
 import logo from './logo.png';
 
 const Navbar = ({ onSearchClick }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const navItems = [
+    { path: "/home", name: "HOME" },
+    { path: "/about", name: "ABOUT ME" },
+    { path: "/excelsheet", name: "SHEETS" },
+    { path: "/foodhome", name: "FOOD" },
+    { path: "/employee", name: "EMPLOYEES" },
+    { path: "/studentinfo", name: "STUDENT" },
+    { path: "/yt", name: "YOUTUBE" },
+    { path: "/gallery", name: "GALLERY" },
+    { path: "/productpage", name: "E-SHOP" },
+    { path: "/age", name: "AGE" }
+  ];
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+    document.body.style.overflow = isMobileMenuOpen ? 'auto' : 'hidden';
   };
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > 50) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
+
+      if (window.innerWidth <= 768) {
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+          setIsVisible(false);
+        } else if (currentScrollY < lastScrollY) {
+          setIsVisible(true);
+        }
+      }
+      
+      setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
-  // Animation variants
-    const navbarVariants = {
-        hidden: { opacity: 0, y: -50 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeInOut" } },
-    };
+  const navbarVariants = {
+    hidden: { y: -100, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { 
+        type: "spring",
+        damping: 10,
+        stiffness: 100
+      }
+    }
+  };
 
-    const linkVariants = {
-        hidden: { opacity: 0, x: -20 },
-        visible: { opacity: 1, x: 0, transition: { duration: 0.3, delay: 0.2 } },
-        exit: { opacity: 0, x: 20, transition: { duration: 0.2 } }
-    };
+  const mobileMenuVariants = {
+    hidden: { x: "100%" },
+    visible: { 
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 25
+      }
+    },
+    exit: { 
+      x: "100%",
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 25
+      }
+    }
+  };
+
+  const linkVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: (i) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.3
+      }
+    })
+  };
 
   return (
     <motion.nav
       className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}
-      variants={navbarVariants}
       initial="hidden"
-      animate="visible"
+      animate={isVisible ? "visible" : "hidden"}
+      variants={navbarVariants}
     >
-     <div className="navbar-brand">
+      <div className="navbar-container">
+        <div className="navbar-brand">
           <NavLink to="/" className="nav-link" end>
-            <img 
+            <motion.img 
               src={logo} 
               alt="Company Logo" 
               className="logo-img"
+              whileHover={{ scale: 1.05, rotate: -2 }}
+              transition={{ type: "spring", stiffness: 300 }}
             />
           </NavLink>
         </div>
 
-      <div className="navbar-menu-icon" onClick={toggleMobileMenu}>
-        {isMobileMenuOpen ? (
-          <FontAwesomeIcon icon={faTimes} className="text-white w-6 h-6 mobile-menu-close-icon" />
-        ) : (
-          <FontAwesomeIcon icon={faBars} className="text-white w-6 h-6 mobile-menu-open-icon" />
-        )}
+        <motion.button 
+          className="mobile-menu-button" 
+          onClick={toggleMobileMenu}
+          aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <FontAwesomeIcon 
+            icon={isMobileMenuOpen ? faTimes : faBars} 
+            className="menu-icon"
+          />
+        </motion.button>
+
+        <div className="navbar-center">
+          <ul className="navbar-links">
+            {navItems.map((item, index) => (
+              <motion.li 
+                key={item.path}
+                custom={index}
+                variants={linkVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <NavLink 
+                  to={item.path} 
+                  className={({ isActive }) => 
+                    `nav-link ${isActive ? 'active-nav-link' : ''}`
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="navbar-right">
+          <motion.button 
+            className="search-icon-button"
+            onClick={onSearchClick}
+            aria-label="Search"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FontAwesomeIcon 
+              icon={faSearch} 
+              className="search-icon"
+            />
+          </motion.button>
+        </div>
       </div>
 
-      <motion.ul
-        className={`navbar-links ${isMobileMenuOpen ? 'mobile-menu-open' : ''}
-                   bg-gray-900/90 backdrop-blur-md md:bg-transparent md:backdrop-blur-none`}
-        >
-        <motion.li variants={linkVariants}>
-          <NavLink to="/home" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-            HOME
-          </NavLink>
-        </motion.li>
-        <motion.li variants={linkVariants}>
-
-<NavLink to="/about" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-  ABOUT ME
-</NavLink>
-</motion.li>
-        <motion.li variants={linkVariants}>
-          <NavLink to="/portfolio" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-            PORTFOLIO
-          </NavLink>
-        </motion.li>
-        <motion.li variants={linkVariants}>
-          <NavLink to="/excelsheet" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-            SHEETS
-          </NavLink>
-        </motion.li>
-        <motion.li variants={linkVariants}>
-          <NavLink to="/foodhome" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-            FOOD
-          </NavLink>
-        </motion.li>
-        <motion.li variants={linkVariants}>
-          <NavLink to="/employee" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-            EMPLOYEES
-          </NavLink>
-        </motion.li>
-        <motion.li variants={linkVariants}>
-          <NavLink to="/studentinfo" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-            STUDENT
-          </NavLink>
-        </motion.li>
-        <motion.li variants={linkVariants}>
-          <NavLink to="/yt" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-            YOUTUBE
-          </NavLink>
-        </motion.li>
-        <motion.li variants={linkVariants}>
-          <NavLink to="/gallery" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-            GALLERY
-          </NavLink>
-        </motion.li>
-        <motion.li variants={linkVariants}>
-          <NavLink to="/productpage" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-            e-SHOP
-          </NavLink>
-        </motion.li>
-         <motion.li variants={linkVariants}>
-          <NavLink to="/age" className="nav-link text-gray-300 hover:text-white" onClick={toggleMobileMenu}>
-            AGE
-          </NavLink>
-
-        </motion.li>
-       
-      </motion.ul>
-
-      <button className="search-icon-button" onClick={onSearchClick}>
-        <FontAwesomeIcon icon={faSearch} className="text-white w-5 h-5" />
-      </button>
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            className="mobile-menu"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={mobileMenuVariants}
+          >
+            <ul className="mobile-nav-items">
+              {navItems.map((item, index) => (
+                <motion.li 
+                  key={item.path}
+                  custom={index}
+                  variants={linkVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <NavLink 
+                    to={item.path} 
+                    className={({ isActive }) => 
+                      `mobile-nav-link ${isActive ? 'active-nav-link' : ''}`
+                    }
+                    onClick={toggleMobileMenu}
+                  >
+                    {item.name}
+                  </NavLink>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 };

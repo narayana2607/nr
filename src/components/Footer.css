@@ -24,7 +24,7 @@ footer .d-flex a {
 }
 
 footer .d-flex a:hover {
-  color: #1ef6d5;
+  color: #f6c41e;
 }
 
 /* Footer Links Section */
@@ -38,8 +38,8 @@ footer h6::after {
   display: block;
   width: 60px;
   height: 2px;
-  background-color: #1ef6d5;
-  margin: 8px 0;
+  background: rgb(0,0,0);
+  background: linear-gradient(90deg, rgba(0,0,0,1) 10%, rgba(252,176,69,1) 100%);  margin: 8px 0;
 }
 
 footer p {
@@ -70,7 +70,7 @@ footer .text-center {
 }
 
 footer .text-center a {
-  color: #1ef6d5;
+  color: #f6bc1e;
   text-decoration: none;
 }
 

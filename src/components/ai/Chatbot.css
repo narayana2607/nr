@@ -2,7 +2,7 @@
 .chatbot-container {
   position: fixed;
   bottom: 70px;
-  right: 10px;
+  right: 30px;
   width: 350px;
   height: 500px;
   background: linear-gradient(90deg, rgba(0,0,0,0.95) 10%, rgba(252,176,69,0.9) 100%);
@@ -18,13 +18,14 @@
 
 .chatbot-container.minimized {
   height: 55px;
+
 }
 
 /* Floating Icon Styles */
 .chatbot-icon {
   position: fixed;
   bottom: 10px;
-  right: 10px;
+  right: 30px;
   width: 60px;
   height: 60px;
   background: linear-gradient(135deg, rgba(252,176,69,0.9) 0%, rgba(0,0,0,0.95) 100%);
@@ -186,7 +187,7 @@
 /* Typing Indicator */
 .typing-indicator {
   display: flex;
-  padding: 10px;
+  padding: 1px;
 }
 
 .typing-indicator span {
@@ -280,8 +281,9 @@
 
 .input-container {
   display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 0px;
+  margin-right: 30px;
 }
 
 .chatbot-input {

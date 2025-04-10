@@ -1,0 +1,81 @@
+.hero {
+    position: relative;
+    height: 70vh;
+    margin-top: -75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 30px;
+    color: #ffffff;
+    padding: 100px;
+    border-color: #faa700;
+
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.265), rgba(18, 18, 18, 1)),
+      url('../assets/me1.jpg') no-repeat center center/cover;
+      filter: blur(0px); /* Adjust the pixel value for the blur intensity */
+  
+  }
+  
+  .hero-content {
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+    margin-top: 26%;
+    border-color: #faa700;
+    
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    color: #faa804;
+    margin-bottom: 17px;
+  }
+  
+  .hero-button {
+    background: linear-gradient(90deg, rgba(0,0,0,0.95) 10%, #fcb045e6 90%);
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 30px;
+  
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+  }
+  
+  .hero-button:hover {
+    transform: scale(3.05);
+  }
+
+  .hero:hover{
+    transform: scale(1.10);
+
+  }
+  
+  .social-links {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+  }
+  
+  .social-icon {
+    font-size: 2rem;
+    color: #faa804;
+    transition: color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .social-icon:hover {
+    color: rgb(253, 0, 0);
+    transform: scale(1.1);
+  }
+  

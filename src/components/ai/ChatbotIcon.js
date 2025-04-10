@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import chatbotIcon from '../assets/chatboticon.jpeg';
-
 import './Chatbot.css';
 
 const ChatbotIcon = () => {
@@ -25,7 +24,7 @@ const ChatbotIcon = () => {
   const recognitionRef = useRef(null);
 
   // Enhanced knowledge base with multi-language support
-  const knowledgeBase = {
+  const knowledgeBase = useMemo(() => ({
     en: {
       greeting: ["Hello!", "Hi there!", "Greetings!", "How can I help you today?"],
       help: ["I can help you navigate the website.", "Ask me about the different sections available."],
@@ -52,79 +51,14 @@ const ChatbotIcon = () => {
         "Puedes escribir 'ayuda' para ver lo que puedo hacer."
       ]
     }
-  };
+  }), []);
 
-  // Initialize speech recognition
-  useEffect(() => {
-    if ('webkitSpeechRecognition' in window) {
-      recognitionRef.current = new window.webkitSpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
-      recognitionRef.current.lang = selectedLanguage;
-
-      recognitionRef.current.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        setUserMessage(transcript);
-        handleSendMessage(transcript);
-      };
-
-      recognitionRef.current.onerror = (event) => {
-        console.error('Speech recognition error', event.error);
-        setVoiceInputActive(false);
-      };
-
-      recognitionRef.current.onend = () => {
-        setVoiceInputActive(false);
-      };
-    }
-
-    return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
-    };
-  }, [selectedLanguage]);
-
-  const toggleChatbot = () => {
-    setIsChatbotVisible(!isChatbotVisible);
-    if (!isChatbotVisible) {
-      setTimeout(() => inputRef.current?.focus(), 100);
-      setUnreadCount(0);
-    }
-  };
-
-  const toggleMinimize = () => {
-    setIsMinimized(!isMinimized);
-  };
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
-  const toggleSuggestions = () => {
-    setSuggestionsVisible(!suggestionsVisible);
-  };
-
-  const toggleVoiceInput = () => {
-    if (voiceInputActive) {
-      recognitionRef.current.stop();
-      setVoiceInputActive(false);
-    } else {
-      recognitionRef.current.start();
-      setVoiceInputActive(true);
-    }
-  };
-
-  const handleLanguageChange = (e) => {
-    setSelectedLanguage(e.target.value);
-  };
-
-  const getRandomResponse = (category) => {
+  const getRandomResponse = useCallback((category) => {
     const options = knowledgeBase[selectedLanguage][category] || knowledgeBase[selectedLanguage].default;
     return options[Math.floor(Math.random() * options.length)];
-  };
+  }, [selectedLanguage, knowledgeBase]);
 
-  const handleSendMessage = (text = null) => {
+  const handleSendMessage = useCallback((text = null) => {
     const messageToSend = text || userMessage;
     
     if (messageToSend.trim() !== "") {
@@ -143,7 +77,6 @@ const ChatbotIcon = () => {
       }
 
       const messageLower = messageToSend.toLowerCase();
-      let navigated = false;
 
       // Keyword-based routing
       const keywordMap = {
@@ -198,6 +131,7 @@ const ChatbotIcon = () => {
       }
 
       // Navigation logic
+      let navigated = false;
       for (const [keyword, route] of Object.entries(keywordMap)) {
         if (messageLower.includes(keyword)) {
           setTimeout(() => navigate(route), 1200);
@@ -223,6 +157,71 @@ const ChatbotIcon = () => {
         }, 1000);
       }
     }
+  }, [getRandomResponse, isChatbotVisible, navigate, userMessage]);
+
+  // Initialize speech recognition
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window) {
+      recognitionRef.current = new window.webkitSpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = selectedLanguage;
+
+      recognitionRef.current.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setUserMessage(transcript);
+        handleSendMessage(transcript);
+      };
+
+      recognitionRef.current.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+        setVoiceInputActive(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setVoiceInputActive(false);
+      };
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, [selectedLanguage, handleSendMessage]);
+
+  const toggleChatbot = () => {
+    setIsChatbotVisible(!isChatbotVisible);
+    if (!isChatbotVisible) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+      setUnreadCount(0);
+    }
+  };
+
+  const toggleMinimize = () => {
+    setIsMinimized(!isMinimized);
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  const toggleSuggestions = () => {
+    setSuggestionsVisible(!suggestionsVisible);
+  };
+
+  const toggleVoiceInput = () => {
+    if (voiceInputActive) {
+      recognitionRef.current.stop();
+      setVoiceInputActive(false);
+    } else {
+      recognitionRef.current.start();
+      setVoiceInputActive(true);
+    }
+  };
+
+  const handleLanguageChange = (e) => {
+    setSelectedLanguage(e.target.value);
   };
 
   const handleKeyDown = (e) => {
@@ -421,6 +420,9 @@ const ChatbotIcon = () => {
                   </button>
                   <button onClick={clearChat} className="action-button">
                     Clear
+                  </button>
+                  <button onClick={saveChat} className="action-button">
+                    Save
                   </button>
                   {chatHistory.length > 0 && (
                     <select 

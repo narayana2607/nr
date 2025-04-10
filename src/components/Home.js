@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './Home.css';
-
+import Leadership from './Team/TeamPage';
 // Import local assets
 import localImage1 from './assets/me.jpg';
 import localImage2 from './assets/me1.jpg';
@@ -119,8 +119,6 @@ const Home = () => {
                     <div className="slider-content">
                       <h1 className="slider-title">Welcome to NNR PVT LTD</h1>
                       <p className="slider-subtitle">Innovative Solutions for a Digital World</p>
-                      {/* <p className="slider-text">Partnered with Avila University</p> */}
-                      {/* <button className="slider-cta">Learn More</button> */}
                     </div>
                   </div>
                 </div>
@@ -129,6 +127,9 @@ const Home = () => {
           </Slider>
         )}
       </section>
+
+      {/* Leadership Section */}
+      <Leadership />
 
       {/* Featured Videos Section */}
       <section className="featured-videos">
@@ -180,9 +181,9 @@ const Home = () => {
                 <div className="article-date">{post.date}</div>
                 <h3 className="article-title">{post.title}</h3>
                 <p className="article-excerpt">{post.excerpt}</p>
-                <button className="read-more" onClick={() => { /* your click handler */ }}>
-  Read More →
-</button>
+                <button className="read-more" onClick={() => {}}>
+                  Read More →
+                </button>
               </article>
             ))}
           </div>

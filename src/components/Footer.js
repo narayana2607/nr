@@ -36,7 +36,7 @@ const Footer = () => {
                 <hr className="footer-divider" />
                 <p><strong>Project Name:</strong> NNR PVT LTD</p>
                 <p><strong>Created By:</strong> Narayana Reddy Naru</p>
-                <p><strong>Email:</strong> <a href="mailto:narayana@nnr.com" className="footer-link">narayana@nnr.com</a></p>
+                <p><strong>Email:</strong> <a href="mailto:narayana.naru@starteryou.com" className="footer-link">narayana@nnr.com</a></p>
                 <p>
                   <strong>GitHub:</strong>{" "}
                   <a href="https://github.com/narayana2607?tab=repositories" target="_blank" rel="noopener noreferrer" className="footer-link">
@@ -49,21 +49,41 @@ const Footer = () => {
               <div className="col-md-3 col-lg-2 col-xl-2 mb-4">
                 <h6 className="footer-title">Useful Links</h6>
                 <hr className="footer-divider" />
-                <p><a href="/home" className="footer-link">Home</a></p>
+                {/* <p><a href="/home" className="footer-link">Home</a></p>
+                <p><a href="/age" className="footer-link">Age Verfication</a></p>
+                <p><a href="/foodhome" className="footer-link">Food</a></p>
+                <p><a href="/excelsheet" className="footer-link">Excels</a></p>
+
                 <p><a href="/about" className="footer-link">About Us</a></p>
                 <p><a href="/gallery" className="footer-link">Gallery</a></p>
-                <p><a href="/contact" className="footer-link">Contact Us</a></p>
+                <p><a href="/contact" className="footer-link">Contact Us</a></p> */}
               </div>
 
-              {/* Contact Info */}
-              <div className="col-md-4 col-lg-3 col-xl-3 mb-md-0 mb-4">
-                <h6 className="footer-title">Contact</h6>
-                <hr className="footer-divider" />
-                <p><i className="fas fa-home"></i> New York, NY 10974, USA</p>
-                <p><i className="fas fa-envelope"></i> info@nnr.com</p>
-                <p><i className="fas fa-phone"></i> +01 234 567 88</p>
-                <p><i className="fas fa-print"></i> +01 234 567 89</p>
-              </div>
+              <div className="col-md-4 col-lg-3 col-xl-3 mb-md-0 mb-4 text-white">
+  <h6 className="footer-title font-bold">CONTACT</h6>
+  <hr className="footer-divider border-orange-500 border-t-2 w-12 mb-4" />
+
+  <div className="flex items-center gap-2 mb-3">
+    <i className="fas fa-home text-orange-500 w-5"></i>
+    <span>New York, NY 10974, USA</span>
+  </div>
+
+  <div className="flex items-center gap-2 mb-3">
+    <i className="fas fa-envelope text-orange-500 w-5"></i>
+    <span>narayana1704@gmail.com</span>
+  </div>
+
+  <div className="flex items-center gap-2 mb-3">
+    <i className="fas fa-phone text-orange-500 w-5"></i>
+    <span>🇺🇸 +1 984-514-4449</span>
+  </div>
+
+  <div className="flex items-center gap-2">
+    <i className="fas fa-phone text-orange-500 w-5"></i>
+    <span>🇮🇳 +91 95333-14444</span>
+  </div>
+</div>
+
             </div>
           </div>
         </section>
